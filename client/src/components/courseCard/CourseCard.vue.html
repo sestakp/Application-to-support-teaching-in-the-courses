@@ -1,0 +1,15 @@
+<div class="course-card inline-flex align-items-center justify-content-center m-2"> 
+    <Card>
+        <template #title> {{ course?.name }} ({{ course?.abbrevation }}) </template>
+        <template #subtitle> {{ course?.year }} </template>
+        <template #content>
+            <p class="m-0">
+                Guarranted by: {{ guarantor.name }} 
+            </p>
+        </template>
+        <template #footer v-if="currentUser != undefined && currentUser?.id == course?.guarantorId">
+            <Button icon="pi pi-pencil" label="Edit" @click="(e) => { e.stopPropagation(); selectItem(course); }"></Button>
+            <Button icon="pi pi-trash" label="Delete" @click="(e) => { e.stopPropagation(); openDeleteDialog() }" severity="secondary" style="margin-left: 0.5em" ></Button>
+        </template>
+    </Card>
+</div>

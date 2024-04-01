@@ -1,0 +1,56 @@
+# docker-compose for application deployment
+# author Vojtěch Kulíšek (xkulis03)
+# since 22.12.2023
+
+version: "2"
+
+services:
+
+  mariadb:
+    container_name: gja_db
+    image: mariadb:11.2.2
+    hostname: "mariadb"
+    restart: always
+    environment:
+      - MARIADB_ROOT_PASSWORD=${SQL_PASSWORD}
+      - MARIADB_DATABASE=${SQL_DB}
+    volumes:
+      - sql-data:/var/lib/mysql
+# uncomment if you wish to be able to connect to the database externally
+    ports:
+      - "3306:3306"
+
+  backend:
+    container_name: gja_backend
+    build: ./api
+    restart: always
+    environment:
+      - SQL_PASSWORD=${SQL_PASSWORD}
+      - SQL_DB=${SQL_DB}
+      - JWT_KEY=${JWT_KEY}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_NAME=${SMTP_NAME}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - CLIENT_URL=${CLIENT_URL}
+      - BACKEND_URL=${BACKEND_URL}
+    ports:
+      - "8080:8080" # "8081:8080"
+    depends_on:
+      - mariadb
+
+  client:
+    build:
+        context: ./client
+        args:
+          - VUE_APP_API_URL=${BACKEND_URL} # http://localhost:8081
+    container_name: gja_client
+    restart: always
+    ports:
+      - "80:80" # "8080:80"
+    depends_on:
+      - backend
+
+volumes:
+  sql-data:
+    driver: local

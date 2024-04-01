@@ -1,0 +1,25 @@
+<div class="email-template-editor" v-if="activity != undefined">
+    <textarea 
+        v-model="activity.emailTemplate" 
+        autoResize
+        ref="templateTextarea"
+        @keydown.backspace="updateMarkerSuggestions($event)"
+        @keydown.up="handleUp($event)"
+        @keydown.down="handleDown($event)"
+        @keydown.enter="handleEnter($event)"
+        @input="updateMarkerSuggestions($event)"
+    >
+    </textarea>
+    <div class="contextMenu" v-if="showSuggestions" :style="{ top: contextMenuTop + 'px', left: contextMenuLeft + 'px' }">
+        <div v-for="(marker, index) in contextMenuMarkers" 
+            :key="marker" 
+            :style="{
+                backgroundColor: index === contextMenuIndex ? 'var(--primary-color)' : 'transparent',
+                color: index === contextMenuIndex ? 'var(--primary-color-text)' : 'inherit'
+            }" 
+            @click="() => insertMarker(marker)"
+            @mouseover="contextMenuIndex = (index)">
+            {{ marker }}
+        </div>
+    </div>
+</div>

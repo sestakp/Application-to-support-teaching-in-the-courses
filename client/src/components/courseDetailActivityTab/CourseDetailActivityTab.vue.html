@@ -1,0 +1,32 @@
+<div class="course-detail-view">
+    <div class="header">
+        <Breadcrumb :home="home" :model="items" style="width: 90%;">
+            <template #item="{ item, props }">
+                <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
+                    <a :href="href" v-bind="props.action" @click="navigate">
+                        <span :class="[item.icon, 'text-color']" />
+                        <span class="text-primary font-semibold">{{ item.label }}</span>
+                    </a>
+                </router-link>
+                <a v-else :href="item.url" :target="item.target" v-bind="props.action">
+                    <span class="text-color">{{ item.label }}</span>
+                </a>
+            </template>
+        </Breadcrumb>
+        <div class="h-container">
+            <Button label="Add activity" @click="() => selectItem({})"></Button>
+        </div>
+    </div>
+    <div v-if="loading"><LoadingBadger /></div>
+    <div v-else class="course-detail-body h-container">
+        <div class="course-activities">
+            <div v-if="allActivities.length > 0" class="h-container">
+                <ActivityCard v-for="activity in allActivities" :key="activity.id" :activity="activity" @click="() => selectActivity(activity)"/>
+            </div>
+            <div v-else>
+                No activities available
+            </div>
+        </div>
+    </div>
+</div>
+<ActivitySidePanelForm :courseId="courseId"/>

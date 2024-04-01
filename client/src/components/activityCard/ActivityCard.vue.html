@@ -1,0 +1,10 @@
+<div class="activity-card m-2"> 
+    <Card>
+        <template #title> {{ activity?.name }} </template>
+        <template #subtitle> {{ activityTypeString }} </template>
+        <template #footer>
+            <Button icon="pi pi-pencil" label="Edit" @click="(e) => { e.stopPropagation(); selectItem(activity); }"></Button>
+            <Button icon="pi pi-trash" label="Delete" @click="(e) => { e.stopPropagation(); openDeleteDialog(); }" severity="secondary" style="margin-left: 0.5em" ></Button>
+        </template>
+    </Card>
+</div>

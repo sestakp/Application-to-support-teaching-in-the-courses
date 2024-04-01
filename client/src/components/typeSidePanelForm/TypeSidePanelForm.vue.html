@@ -1,0 +1,11 @@
+<Sidebar class="edit-side-bar" v-model:visible="isSelectedItem" @hide="onHide" @show="onShow" position="right">
+    <h2>{{ selectedItem.id != undefined ? "Edit" : "Add" }} Type</h2>
+    <form @submit="handleSubmit" action="javascript:void(0);">
+        <span class="p-float-label">
+            <InputText v-model="selectedItem.name" inputId="name" :feedback="false" />
+            <label for="name">Name<span style="color:red;">*</span></label>
+        </span>
+        <p style="color: red;">{{error}}</p>
+        <Button type="submit" label="Save"></Button>    
+    </form>
+</Sidebar>

@@ -1,0 +1,19 @@
+<Sidebar class="edit-side-bar" v-model:visible="isSelectedItem" @hide="onHide" @show="onShow" position="right">
+    <h2>{{ selectedItem.id != undefined ? "Edit" : "Add" }} Course</h2>
+    <form @submit="handleSubmit" action="javascript:void(0);">
+        <span class="p-float-label">
+            <InputText v-model="selectedItem.name" inputId="name" :feedback="false" />
+            <label for="name">Name<span style="color: red;">*</span></label>
+        </span>
+        <span class="p-float-label">
+            <InputText v-model="selectedItem.abbrevation" inputId="abbr" :feedback="false" />
+            <label for="abbr">Abbrevation<span style="color: red;">*</span></label>
+        </span>
+        <span class="p-float-label">
+            <InputText type="number" v-model="selectedItem.year" inputId="year" :feedback="false" />
+            <label for="year">Year</label>
+        </span>
+        <p style="color: red;">{{error}}</p>
+        <Button type="submit" label="Save"></Button>    
+    </form>
+</Sidebar>

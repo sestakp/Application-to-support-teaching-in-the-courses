@@ -1,0 +1,21 @@
+<Sidebar class="edit-side-bar" v-model:visible="isSelectedItem" @hide="onHide" @show="onShow" position="right" style="width: 700px;">
+    <h2>{{ selectedItem.id != undefined ? "Edit" : "Add" }} Activity</h2>
+    <form @submit="handleSubmit" action="javascript:void(0);">
+        <div class="h-container" style="gap: 2em;">
+            <span class="p-float-label">
+                <InputText v-model="selectedItem.name" inputId="name" :feedback="false" />
+                <label for="name">Name<span style="color: red">*</span></label>
+            </span>
+            <span class="p-float-label">
+                <div>Is team based</div>
+                <InputSwitch v-model="selectedItem.teamBased" inputId="team" :feedback="false" />
+            </span>    
+        </div>
+        <span class="p-float-label">
+            <div>Email template</div>
+            <EmailTemplateEditor :activityProp="selectedItem" :updateActivity="updateActivity"/>
+        </span>
+        <p style="color: red;">{{error}}</p>
+        <Button type="submit" label="Save"></Button>
+    </form>
+</Sidebar>

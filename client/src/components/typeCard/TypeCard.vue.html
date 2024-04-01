@@ -1,0 +1,9 @@
+<div class="type-card m-2 p-1"> 
+    <div class="h-container">
+        <div class="title">{{ type?.name }}</div>
+        <div>
+            <Button icon="pi pi-pencil" label="Edit" @click="(e) => { e.stopPropagation(); selectItem(type); }"></Button>
+            <Button icon="pi pi-trash" label="Delete" @click="(e) => { e.stopPropagation(); openDeleteDialog(); }" severity="secondary" style="margin-left: 0.5em" ></Button>    
+        </div>
+    </div>
+</div>

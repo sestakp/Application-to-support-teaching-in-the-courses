@@ -1,0 +1,12 @@
+<div class="user-card m-2">
+    <Card :class="highlight">
+        <template #title> 
+            <div class="h-container justify-content-center">
+                <div>{{ user?.name }}</div>
+                <i v-if="!isGuarantor && currentUser?.id == course.guarantorId" class="pi pi-trash" @click="openDeleteDialog"></i>
+            </div>
+        </template>
+        <template #subtitle> {{ user?.email }} </template>
+        <template #content v-if="isGuarantor"> Guarrantor </template>
+    </Card>
+</div>

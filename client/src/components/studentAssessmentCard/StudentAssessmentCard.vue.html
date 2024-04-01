@@ -1,0 +1,6 @@
+<div class="student-card m-2 p-1"> 
+    <div class="v-container">
+        <div class="title">{{ student?.name }}</div>
+        <div v-if="isAssessed">{{ studentPoints }} / {{ maxPoints }}</div>
+    </div>
+</div>

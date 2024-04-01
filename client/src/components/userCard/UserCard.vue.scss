@@ -1,0 +1,36 @@
+.user-card  {
+    box-sizing: border-box;
+    box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    min-width: 240px;
+
+    .p-card {
+        .p-card-body {
+            padding: 0.7rem;
+        }
+        .p-card-title {
+            font-size: larger;
+
+            i {
+                font-size: 1.3rem;
+                cursor: pointer;
+                margin-left: 0.5rem;
+            }
+
+            i:hover {
+                color: var(--primary-color);
+            }
+        }
+        .p-card-subtitle {
+            font-size: medium;
+        }
+        .p-card-content {
+            font-size: medium;
+            padding: 0;
+        }
+    }
+
+    .highlight .p-card-title {
+        color: var(--primary-color);
+    }
+}

@@ -1,0 +1,75 @@
+.activity-detail-body {
+    justify-content: space-between;
+    padding: 0em 2em;
+
+    .p-accordion {
+        .p-accordion-tab {
+            p {
+                margin: 0.5em;
+            }
+        }
+    }
+
+    .p-accordion.team-list {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1em;
+        width: 100%;
+
+        .p-accordion-tab {
+            min-width: 300px;
+        }
+    }
+
+    .student-list {
+        width: max-content;
+        min-width: 200px;
+
+        .student-card .h-container {
+            padding: 4px 0px;
+        }
+        .student-card:hover {
+            box-shadow: 1px 2px 4px 2px var(--primary-color);
+            cursor: pointer;
+            transition: ease-in-out 100ms;
+        }
+
+        .p-accordion-tab.assessed-card {
+            box-shadow: 1px 2px 4px 2px var(--primary-color) !important;
+            color: var(--primary-color) !important;
+        }
+    }
+
+    .assessment-tab {
+        padding: 1.5em 1em 0em;
+        gap: 1.5em;
+
+        justify-content: space-around;
+        align-items: stretch;
+
+        h3 {
+            margin: 0;
+        }
+    }
+}
+.activity-detail-body.reports-tab {
+    justify-content: left;
+
+    .p-card {
+        box-shadow: 1px 2px 4px 2px rgba(0, 0, 0, 0.5)
+    }
+}
+.activity-criterias {
+    width: 100%
+}
+.activity-detail-view {
+    .header {
+        .h-container {
+            gap: 1em;
+            margin-left: 1em;
+            height: 52px;
+        }
+    }
+}
+

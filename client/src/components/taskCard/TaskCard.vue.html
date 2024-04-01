@@ -1,0 +1,32 @@
+<div class="task-card m-2"> 
+    <Card :style="{'border': task.responsibleUserId == null ? '1px solid red' : 'inherit'}">
+        <template #title>
+            {{ task?.order }}. {{ task?.name }}
+        </template>
+        <template #subtitle> 
+            <div v-if="loading">
+            </div>
+            <div v-else class="v-container">
+                <span>{{ type?.name }}</span>
+                <span>{{ user?.name }}</span>
+                <span>{{ formatDate(task?.start) }} - {{ formatDate(task?.end) }}</span>    
+            </div>
+        </template>
+        <template #content>
+            <div v-if="loading">
+                <LoadingBadger />
+            </div>
+            <div v-else class="v-container">
+                <span>{{activity?.name}} / {{ task?.criteriaCategory}}</span>
+                <Divider style="margin: 0.5em 0em;" />
+                <span>{{ task?.description }}</span>    
+            </div>
+        </template>
+        <template #footer>
+            <div>
+                <Button icon="pi pi-pencil" label="Edit" @click="(e) => { e.stopPropagation(); selectItem(task); }"></Button>
+                <Button icon="pi pi-trash" label="Delete" @click="(e) => { e.stopPropagation(); openDeleteDialog(); }" severity="secondary" style="margin-left: 0.5em" ></Button>
+            </div>
+        </template>
+    </Card>
+</div>

@@ -1,0 +1,37 @@
+<div class="login-view">
+    <div class="h-container justify-content-center m-3">
+        <form v-if="!isRegistering" class="login-form v-container container" @submit="onLogin" action="javascript:void(0);">
+            <span class="p-float-label">
+                <InputText v-model="loginModel.email" id="email" type="email" autocomplete="email"/>
+                <label for="email">Email</label>
+            </span>
+            <span class="p-float-label">
+                <Password v-model="loginModel.password" inputId="password" :feedback="false" autocomplete="password" />
+                <label for="password">Password</label>
+            </span>
+            <Button type="submit" label="Login" :disabled="loading"></Button>
+            <Button label="Register" severity="secondary" @click="toggleRegistrationForm"></Button>    
+        </form>
+        <form v-if="isRegistering" class="register-form v-container container" @submit="onRegister" action="javascript:void(0);">
+            <span class="p-float-label">
+                <InputText v-model="registerModel.email" id="email" type="email" />
+                <label for="email">Email<span style="color: red;">*</span></label>
+            </span>
+            <span class="p-float-label">
+                <InputText v-model="registerModel.name" id="fullname" />
+                <label for="fullname">Full name<span style="color: red;">*</span></label>
+            </span>
+            <span class="p-float-label">
+                <Password v-model="registerModel.password" inputId="password" />
+                <label for="password">Password<span style="color: red;">*</span></label>
+            </span>
+            <span class="p-float-label">
+                <Password v-model="registerModel.passwordConfirm" inputId="passwordConfirm" :feedback="false" />
+                <label for="passwordConfirm">Confirm password<span style="color: red;">*</span></label>
+            </span>
+            <small id="passwordConfirm-error" style="color: red">{{passwordError}}</small>
+            <Button type="submit" label="Register" :disabled="loading"></Button>
+            <Button label="Back" severity="secondary" @click="toggleRegistrationForm"></Button>    
+        </form>
+    </div>
+</div>

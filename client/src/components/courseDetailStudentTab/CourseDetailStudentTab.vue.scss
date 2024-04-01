@@ -1,0 +1,11 @@
+.course-detail-body {
+    justify-content: space-between;
+    padding: 0em 2em;
+}
+.course-students {
+    width: 100%;
+
+    .student-card {
+        cursor: default;
+    }
+}

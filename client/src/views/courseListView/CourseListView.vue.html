@@ -1,0 +1,16 @@
+<div class="course-list-view">
+    <div class="header">
+        <h1>Course list</h1>
+        <Button label="Add course" @click="() => selectItem({})"></Button>
+    </div>
+    <div v-if="loading"><LoadingBadger /></div>
+    <template v-else>
+        <div v-if="allItems.length > 0">
+            <CourseCard v-for="course in allItems" :key="course.id" :course="course" @click="() => selectCourse(course)" />
+        </div>
+        <div v-else>
+            No courses available.
+        </div>
+    </template>
+    <CourseSidePanelForm />
+</div>

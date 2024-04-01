@@ -1,0 +1,269 @@
+<div class="activity-detail-view">
+    <TabView v-model:activeIndex="tabId">
+        <TabPanel header="Criterias">
+            <div class="header">
+                <Breadcrumb :home="home" :model="items" style="width: 90%;">
+                    <template #item="{ item, props }">
+                        <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
+                            <a :href="href" v-bind="props.action" @click="navigate">
+                                <span :class="[item.icon, 'text-color']"></span>
+                                <span class="text-primary font-semibold">{{ item.label }}</span>
+                            </a>
+                        </router-link>
+                        <a v-else :href="item.url" :target="item.target" v-bind="props.action">
+                            <span class="text-color">{{ item.label }}</span>
+                        </a>
+                    </template>
+                </Breadcrumb>
+                <div class="h-container">
+                    <Button label="Add criterion" @click="() => selectCriterion({})"></Button>
+                </div>
+            </div>
+            <div v-if="loading">
+                <LoadingBadger />
+            </div>
+            <div v-else class="activity-detail-body h-container">
+                <div class="activity-criterias">
+                    <div v-if="allCriterias.length > 0">
+                        <Accordion :multiple="true">
+                            <AccordionTab v-for="category in categories" :key="category" :header="category">
+                                <CriterionCard v-for="criterion in filteredCriterions(category)" :key="criterion.id"
+                                    :criterion="criterion" />
+                            </AccordionTab>
+                        </Accordion>
+                    </div>
+                    <div v-else>
+                        No Criterias available
+                    </div>
+                </div>
+            </div>
+            <CriterionSidePanel :activityId="activityId"/>
+        </TabPanel>
+
+        <TabPanel header="Teams" v-if="activity?.teamBased">
+            <div class="header">
+                <Breadcrumb :home="home" :model="items" style="width: 90%;">
+                    <template #item="{ item, props }">
+                        <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
+                            <a :href="href" v-bind="props.action" @click="navigate">
+                                <span :class="[item.icon, 'text-color']"></span>
+                                <span class="text-primary font-semibold">{{ item.label }}</span>
+                            </a>
+                        </router-link>
+                        <a v-else :href="item.url" :target="item.target" v-bind="props.action">
+                            <span class="text-color">{{ item.label }}</span>
+                        </a>
+                    </template>
+                </Breadcrumb>
+                <div class="h-container">
+                    <Button label="Import teams" @click="toggleImportTeamsOpen"></Button>
+                </div>
+            </div>
+
+            <div class="activity-detail-body h-container">
+                <Accordion class="team-list" :multiple="true">
+                    <AccordionTab  v-for="(team, index) in allTeams" :key="team.id" :header="team.name">
+                        <p v-for="student in filterStudentsByTeam(team)" :key="student.id">{{ student.name }} ({{ student.fitlogin }})</p> 
+                        <div>
+                            <Button icon="pi pi-trash" label="Delete" @click="(e) => { e.stopPropagation(); openTeamDeleteDialog(team) }" severity="secondary" style="margin-left: 0.5em" ></Button>
+                        </div>
+                    </AccordionTab>
+                </Accordion>
+            </div>
+
+            <Sidebar v-model:visible="importTeamsOpen" position="right" style="width: 700px">
+                <h2>Import teams</h2>
+                <Textarea v-model="teamImportInput" @input="onTeamInputChange" autoResize style="width: 100%; resize: vertical; max-height: 75vh;" @keydown.tab.prevent="insertTab" placeholder="Test Testovic \t 000000 \t xtest00 \t team name"></Textarea>
+                <p v-if="teamImportError" style="color: red">{{ teamImportError }}</p>
+                <Button @click="onTeamSubmit" :label="teamImportLabel" :disabled="teamImportLabel != `Import`" style="margin: auto; display: block;"></Button>
+            </Sidebar>
+        </TabPanel>
+        
+        <TabPanel header="Send emails">
+            <div class="header">
+                <Breadcrumb :home="home" :model="items" style="width: 100%;">
+                    <template #item="{ item, props }">
+                        <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
+                            <a :href="href" v-bind="props.action" @click="navigate">
+                                <span :class="[item.icon, 'text-color']"></span>
+                                <span class="text-primary font-semibold">{{ item.label }}</span>
+                            </a>
+                        </router-link>
+                        <a v-else :href="item.url" :target="item.target" v-bind="props.action">
+                            <span class="text-color">{{ item.label }}</span>
+                        </a>
+                    </template>
+                </Breadcrumb>
+            </div>
+            <div class="activity-detail-body h-container">
+                <div style="width: 100%;">    
+                    <h3>Email template</h3>
+                    <EmailTemplateEditor :activityProp="activity" :updateActivity="updateActivity"/>
+                    <h3>Email preview</h3>
+                    <EmailPreview :activityId="activityId"/>
+                    <Button :label="mailSended == undefined ? `Mass sending of emails` : `${mailSended} / ${allStudents.length} emails sent`" @click="massSendingOfEmails" :disabled="loading"></Button>
+                </div>
+                <Divider layout="vertical"/>
+                <div>
+                    <div v-if="activity?.teamBased" class="student-list">
+                        <h3>Teams</h3>
+                        <ScrollPanel style="height: calc(100vh - 259px - 52px)">
+                            <Accordion v-model:activeIndex="teamTabIndex">
+                                <AccordionTab  v-for="(team, index) in allTeams" :key="team.id" :header="team.name">
+                                    <p v-for="student in filterStudentsByTeam(team)" :key="student.id">{{ student.name }}</p>
+                                </AccordionTab>
+                            </Accordion>    
+                        </ScrollPanel>
+                    </div>
+                    <div v-else class="student-list">
+                        <h3>Students</h3>
+                        <ScrollPanel style="height: calc(100vh - 256px - 52px)">
+                            <div v-if="allStudents.length > 0">
+                                <StudentCard v-for="s in allStudents" :key="s.id" :student="s" @click="() => selectStudent(s)"
+                                    :class="{'selected-card' : s.id == selectedStudent?.id }"/>
+                            </div>
+                            <div v-else>
+                                No students
+                            </div>
+                        </ScrollPanel>
+                    </div>
+                </div>
+            </div> 
+        </TabPanel>
+
+        <TabPanel header="Reports" v-if="isGuarantor">
+            <div class="header">
+                <Breadcrumb :home="home" :model="items" style="width: 90%;">
+                    <template #item="{ item, props }">
+                        <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
+                            <a :href="href" v-bind="props.action" @click="navigate">
+                                <span :class="[item.icon, 'text-color']" />
+                                <span class="text-primary font-semibold">{{ item.label }}</span>
+                            </a>
+                        </router-link>
+                        <a v-else :href="item.url" :target="item.target" v-bind="props.action">
+                            <span class="text-color">{{ item.label }}</span>
+                        </a>
+                    </template>
+                </Breadcrumb>
+            </div>
+            <div class="activity-detail-body reports-tab h-container">
+                <Card v-for="user in usersWithAccessToCurrentCourse" :key="user.id" class="inline-flex align-items-center justify-content-center m-2" style="width: 25%;">
+                    <template #title> {{ user.name }} </template>
+                    <template #content>
+                        <p>{{getUserHours(user.id)}} Hours</p>
+                        <p>{{getUserRatio(user.id)}} % of the total time</p>
+                    </template>
+                </Card>
+            </div>
+        </TabPanel>
+
+        <TabPanel header="Export assessments">
+            <div class="header">
+                <Breadcrumb :home="home" :model="items" style="width: 100%;">
+                    <template #item="{ item, props }">
+                        <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
+                            <a :href="href" v-bind="props.action" @click="navigate">
+                                <span :class="[item.icon, 'text-color']" />
+                                <span class="text-primary font-semibold">{{ item.label }}</span>
+                            </a>
+                        </router-link>
+                        <a v-else :href="item.url" :target="item.target" v-bind="props.action">
+                            <span class="text-color">{{ item.label }}</span>
+                        </a>
+                    </template>
+                </Breadcrumb>
+            </div>
+            <div class="activity-detail-body h-container">
+                <Textarea v-model="aassessmentExport" style="width: 100%;height: calc(100vh - 262px);resize: none;" readonly ></Textarea>
+            </div>
+        </TabPanel>
+
+        <TabPanel header="Assessments" >
+            <div class="header">
+                <Breadcrumb :home="home" :model="items" style="width: 90%;">
+                    <template #item="{ item, props }">
+                        <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
+                            <a :href="href" v-bind="props.action" @click="navigate">
+                                <span :class="[item.icon, 'text-color']"></span>
+                                <span class="text-primary font-semibold">{{ item.label }}</span>
+                            </a>
+                        </router-link>
+                        <a v-else :href="item.url" :target="item.target" v-bind="props.action">
+                            <span class="text-color">{{ item.label }}</span>
+                        </a>
+                    </template>
+                </Breadcrumb>
+                <div class="h-container">
+                    <h2 v-if="activity?.teamBased">Teams</h2>
+                    <h2 v-else>Students</h2>    
+                </div>
+            </div>
+            <div class="activity-detail-body h-container" v-if="categories.length > 0">
+                <div style="width: 100%;">
+                    <Accordion multiple :activeIndex="[0,1,2,3,4,5,6,7,8,9,10]">
+                        <AccordionTab v-for="(category, index) in categories" :key="index" :header="category" >
+                            <div v-for="(aassessment,index) in filterAassessmentsByCriterionCategory(category)" :key="index" class="h-container assessment-tab">
+                                <div style="width: 100%;">
+                                    <h3> {{ findCriterion(aassessment)?.name }}</h3>
+                                    <p> {{ findCriterion(aassessment)?.description }}</p>
+                                </div>
+                                <div>
+                                    <span class="p-float-label">
+                                        <InputNumber ref="assessmentInput" :inputStyle="{'width':'200px'}" v-model="aassessment.points" :disabled="!canEdit" :min="findCriterion(aassessment)?.minPoints" :max="findCriterion(aassessment)?.maxPoints" :useGrouping="false" />
+                                        <label>Points ({{ findCriterion(aassessment)?.minPoints }} - {{ findCriterion(aassessment)?.maxPoints }})</label>
+                                    </span>
+                                </div>
+                                <div style="min-width: 30%;">
+                                    <span class="p-float-label">
+                                        <Textarea style="width: 100%;" :disabled="!canEdit || aassessment.points == undefined" v-model="aassessment.feedback" autoResize ></Textarea>
+                                        <label>Feedback</label>
+                                    </span>
+                                </div>
+                            </div>
+                        </AccordionTab>
+                    </Accordion>
+                    <div class="h-container container justify-content-center">
+                        <Button label="Submit & Next" @click="onAassessmentSubmitAndNext" ></Button>
+                        <Button label="Submit" @click="onAassessmentSubmit" ></Button>    
+                    </div>
+                </div>
+                <Divider layout="vertical"/>
+                <div>
+                    <div v-if="activity?.teamBased" class="student-list">
+                        <ScrollPanel style="height: calc(100vh - 256px)">
+                            <Accordion v-model:activeIndex="teamTabIndex">
+                                <AccordionTab  v-for="(team, index) in allTeams" :key="team.id">
+                                    <template #header>
+                                        <div class="v-container" style="align-items: start;">
+                                            <span>{{ team.name }}</span>
+                                            <span v-if="isTeamAassessed(team.id)">({{getTeamPoints(team)}} / {{ getMaxPoints() }})</span>
+                                        </div>
+                                    </template>
+                                    <p v-for="student in filterStudentsByTeam(team)" :key="student.id">{{ student.name }}</p>
+                                </AccordionTab>
+                            </Accordion>
+                        </ScrollPanel>
+                    </div>
+                    <div v-else class="student-list">                      
+                        <ScrollPanel style="width: 100%; height: 65vh">
+                            <div v-if="allStudents.length > 0">
+                                <StudentAssessmentCard v-for="s in allStudents" :key="s.id" :student="s"
+                                    @click="selectStudent(s)" :isAssessed="isStudentAassessed(s.id)"
+                                    :studentPoints="getStudentPoints(s.id)" :maxPoints="getMaxPoints()"
+                                    :class="{ 'selected-card' : s.id == selectedStudent?.id, 'assessed-card': isStudentAassessed(s.id) }">
+                                </StudentAssessmentCard>
+                            </div>
+                            <div v-else>
+                                No students
+                            </div>
+                        </ScrollPanel>
+                    </div>
+                </div>
+            </div>
+            <div v-else>
+                <p>No criterias found</p>
+            </div>
+        </TabPanel>
+    </TabView>
+</div>

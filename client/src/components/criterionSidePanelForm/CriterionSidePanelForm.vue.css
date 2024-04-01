@@ -1,0 +1,16 @@
+.form-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal-width columns */
+  gap: 16px; /* Adjust the gap between columns */
+}
+button {
+    display: block;
+    margin: auto;
+}
+textarea {
+    width: 92%;
+}
+
+.p-inputtext, .p-inputnumber{
+  width: 100%;
+}

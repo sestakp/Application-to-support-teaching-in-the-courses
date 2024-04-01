@@ -1,0 +1,38 @@
+.activity-detail-body {
+    justify-content: space-between;
+    padding: 0em 2em;
+
+    .student-list {
+        width: max-content;
+    }
+
+    .assessment-tab {
+        padding: 1.5em 1em 0em;
+        gap: 1.5em;
+
+        justify-content: space-around;
+        align-items: stretch;
+
+        h3 {
+            margin: 0;
+        }
+    }
+}
+
+.activity-criterias{
+    width:100%
+}
+.p-inputtextarea{
+    width: 100%;
+}
+
+
+.activity-detail-view .header .h-container {
+    gap: 1em;
+}
+
+.h-container{
+    flex-direction: row;
+    align-items: center;
+    align-items: flex-start;
+}

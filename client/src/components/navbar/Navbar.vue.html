@@ -1,0 +1,14 @@
+<nav>
+    <img alt="Vue logo" src="@/assets/vut-fit-logo.png">
+    <div>
+        <router-link to="/">Home</router-link> | 
+        <div v-if="isLogged">
+            <router-link to="/courses">Courses</router-link> |
+            <router-link to="/user">{{ currentUser.email }}</router-link> |
+            <router-link to="/" @click="() => logout(currentUser)">Logout</router-link>
+        </div>
+        <div v-if="!isLogged">
+            <router-link to="/login">Login</router-link>
+        </div>
+    </div>
+</nav>

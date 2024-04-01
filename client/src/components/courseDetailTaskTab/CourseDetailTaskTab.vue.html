@@ -1,0 +1,42 @@
+<div class="course-detail-view">
+    <div class="header">
+        <Breadcrumb :home="home" :model="items" style="width: 70%;">
+            <template #item="{ item, props }">
+                <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
+                    <a :href="href" v-bind="props.action" @click="navigate">
+                        <span :class="[item.icon, 'text-color']" />
+                        <span class="text-primary font-semibold">{{ item.label }}</span>
+                    </a>
+                </router-link>
+                <a v-else :href="item.url" :target="item.target" v-bind="props.action">
+                    <span class="text-color">{{ item.label }}</span>
+                </a>
+            </template>
+        </Breadcrumb>
+        <div class="h-container">
+            <Dropdown v-model="typeCategory" :options="allTypes" optionLabel="name" placeholder="Filter task type" showClear />
+            <Button v-if="isGuarantor" label="Add solver" @click="toggleOpenAddSolver"></Button>
+            <Button label="Add task" @click="() => selectItem({})"></Button> 
+        </div>
+    </div>
+    <div v-if="loading"><LoadingBadger /></div>
+    <div v-else class="course-detail-body h-container">
+        <div class="course-tasks">
+            <div v-if="getTasks().length > 0" class="h-container">
+                <TaskCard v-for="task in getTasks()" :key="task.id" :task="task" @click="() => selectTask(course,task)" />
+            </div>
+            <div v-else>
+                No tasks available
+            </div>
+        </div>
+        <Divider layout="vertical"/>
+        <div style="display: flex; flex-direction: column;">
+            <div class="course-users" style="display: inline-block;">
+                <UserCard :user="guarantor" :is-guarantor="true" :course="course" />
+                <UserCard v-for="user in allUsersWithoutGuarantor" :key="user.id" :user="user" :course="course" />
+            </div>
+        </div>
+        <AssignSolverSidePanelForm :open="openAddSolverSidePanel" :toggle="toggleOpenAddSolver" :course="course" ></AssignSolverSidePanelForm>
+    </div>
+</div>
+<TaskSidePanelForm :courseId="courseId" />

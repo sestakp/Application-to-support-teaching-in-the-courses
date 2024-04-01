@@ -1,0 +1,23 @@
+.email-template-editor {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+textarea {
+    width: 100%;
+    height: 400px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    resize: vertical;
+}
+.contextMenu {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 5px;
+    z-index: 9999;
+}
+.contextMenu div {
+    padding: 5px;
+    cursor: pointer;
+}

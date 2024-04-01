@@ -1,0 +1,12 @@
+.activity-card {
+    width: 350px;
+    
+    .p-card {
+        box-shadow: 2px 3px 6px 3px rgba(0, 0, 0, 0.5);
+    }
+    .p-card:hover {
+        box-shadow: 2px 3px 6px 3px var(--primary-color);
+        cursor: pointer;
+        transition: ease-in-out 100ms;
+    }
+}

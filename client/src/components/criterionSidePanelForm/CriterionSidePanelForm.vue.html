@@ -1,0 +1,46 @@
+<Sidebar class="edit-side-bar" v-model:visible="isSelectedItem" @hide="onHide" @show="onShow" position="right" style="width: 600px;">
+    <h2>{{ selectedCriterion.id != undefined ? "Edit" : "Add" }} criterion</h2>
+    <form @submit="handleSubmit" action="javascript:void(0);">
+        <div class="form-container">
+            <div class="column">
+                <span class="p-float-label">
+                    <InputText v-model="selectedCriterion.code" inputId="code" :feedback="false" />
+                    <label for="code">Code<span style="color: red">*</span></label>
+                </span>
+                <span class="p-float-label">
+                    <InputText v-model="selectedCriterion.name" inputId="name" :feedback="false" />
+                    <label for="name">Name<span style="color: red">*</span></label>
+                </span>
+                <span class="p-float-label">
+                    <InputText type="number" v-model="selectedCriterion.minPoints" inputId="minPoints" :feedback="false" min="0" :useGrouping="false" />
+                    <label for="minPoints">Min Points<span style="color: red">*</span></label>
+                </span>
+            </div>
+            <div class="column">
+                <span class="p-float-label">
+                    <Dropdown v-model="selectedCriterion.assessmentMethod" inputId="assessmentMethod" :options="['Per student', 'Per team']" placeholder="Select a assessment method" class="w-full" />
+                    <label for="assessmentMethod">Assessment method<span style="color: red">*</span></label>
+                </span>
+                <span class="p-float-label">
+                    <Dropdown v-model="selectedCriterion.category" editable inputId="category" :options="categories" placeholder="Select or create a category" class="w-full" />
+                    <label for="category">Category<span style="color: red">*</span></label>
+                </span>
+                <span class="p-float-label">
+                    <InputText type="number" v-model="selectedCriterion.maxPoints" inputId="maxPoints" :feedback="false" :min="selectedCriterion.minPoints" :useGrouping="false" />
+                    <label for="maxPoints">Max Points<span style="color: red">*</span></label>
+                </span>
+            </div>
+        </div>      
+        <span class="p-float-label">
+            <Textarea v-model="selectedCriterion.description" inputId="description" :feedback="false" autoResize ></Textarea>
+            <label for="description">Description</label>
+        </span>
+        <span class="p-float-label">
+            <Textarea v-model="selectedCriterion.feedback" inputId="feedback" :feedback="false" autoResize ></Textarea>
+            <label for="feedback">Feedback</label>
+        </span>
+
+        <small style="color:red;"> {{error}}</small>
+        <Button type="submit" label="Save"></Button>
+    </form>
+</Sidebar>

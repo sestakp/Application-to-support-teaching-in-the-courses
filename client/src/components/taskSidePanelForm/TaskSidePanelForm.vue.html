@@ -1,0 +1,37 @@
+<Sidebar class="edit-side-bar" v-model:visible="isSelectedItem" @hide="onHide" @show="onShow" position="right" style="width: 600px">
+    <h2>{{ selectedItem.id != undefined ? "Edit" : "Add" }} Task</h2>
+    <div v-if="loading"><LoadingBadger /></div>
+    <form v-else @submit="handleSubmit" action="javascript:void(0);">
+        <span class="p-float-label">
+            <InputText type="number" v-model="selectedItem.order" inputId="order" :feedback="false"/>
+            <label for="order">Order<span style="color:red;">*</span></label>
+            <div class="error" v-if="isDuplicate">Number is already in the list or its negative!</div>
+        </span>
+        <span class="p-float-label">
+            <InputText v-model="selectedItem.name" inputId="name" :feedback="false" />
+            <label for="name">Name<span style="color:red;">*</span></label>
+        </span>
+        <span class="p-float-label">
+            <Textarea v-model="selectedItem.description" inputId="description" :feedback="false" autoResize></Textarea>
+            <label for="description">Description</label>
+        </span>
+        <span class="p-float-label">
+            <Calendar v-model="dates" :dateFormat="dateFormat" selectionMode="range" inputId="date" :manualInput="false" showButtonBar showTime hourFormat="24" />
+            <label for="date">Date range<span style="color:red;">*</span></label>
+        </span>
+        <span class="p-float-label">
+            <Dropdown v-model="type" editable :options="types" optionLabel="name" inputId="type" />
+            <label for="type">Type<span style="color:red;">*</span></label>
+        </span>
+        <span class="p-float-label">
+            <Dropdown v-model="activity" :options="activities" optionLabel="name" inputId="activity" />
+            <label for="activity">Activity</label>
+        </span>
+        <span class="p-float-label">
+            <Dropdown v-model="selectedItem.criteriaCategory" :options="categories" inputId="category" />
+            <label for="category">Criteria category</label>
+        </span>
+        <p style="color: red;">{{errorMessage}}</p>
+        <Button type="submit" label="Save"></Button>
+    </form>
+</Sidebar>

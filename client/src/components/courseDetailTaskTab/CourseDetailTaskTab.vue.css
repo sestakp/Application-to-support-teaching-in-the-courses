@@ -1,0 +1,10 @@
+.course-detail-body {
+    justify-content: space-between;
+    padding: 0em 2em;
+}
+.course-tasks{
+    width: 100%;
+}
+.course-tasks .h-container {
+    flex-wrap: wrap;
+}

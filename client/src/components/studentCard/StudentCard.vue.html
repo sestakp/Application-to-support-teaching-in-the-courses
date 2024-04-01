@@ -1,0 +1,9 @@
+<div class="student-card m-2 p-1"> 
+    <div class="h-container">
+        <div class="title">{{ student?.name }} &emsp; {{student?.fitlogin}} &emsp; {{student?.vutlogin}}</div>
+        <div v-if="isEditable">
+            <Button icon="pi pi-pencil" label="Edit" @click="(e) => { e.stopPropagation(); selectItem(student); }"></Button>
+            <Button icon="pi pi-trash" label="Delete" @click="(e) => { e.stopPropagation(); openDeleteDialog(); }" severity="secondary" style="margin-left: 0.5em" ></Button>    
+        </div>
+    </div>
+</div>

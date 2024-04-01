@@ -1,0 +1,6 @@
+.p-inputtext, .p-calendar, .p-dropdown, .p-inputnumber{
+    width: 100% !important;
+}
+.error {
+    color: red;
+}

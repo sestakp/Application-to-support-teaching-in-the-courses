@@ -1,0 +1,10 @@
+<Sidebar class="edit-side-bar" v-model:visible="isOpen" @hide="onHide" @show="onShow"  position="right" style="width: 400px;">
+    <h2>Add Solver</h2>
+    <form @submit="handleSubmit" action="javascript:void(0);">
+        <span class="p-float-label">
+            <Dropdown v-model="selectedSolver" :options="users" optionLabel="email" inputId="name" :feedback="false" placeholder="Select a user" aria-required="true"/>
+            <label for="name">Name</label>
+        </span>
+        <Button type="submit" label="Save"></Button>    
+    </form>
+</Sidebar>

@@ -1,0 +1,115 @@
+#app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    width: 100%;
+    padding: 0;
+    margin:0;
+}
+nav {
+    padding: 30px;
+
+    a {
+        font-weight: bold;
+        color: #2c3e50;
+
+        &.router-link-exact-active {
+            color: #42b983;
+        }
+    }
+}
+body {
+    display: flex;
+    justify-content: center;
+    // overflow-y: hidden;
+    margin: 0;
+}
+
+.h-container {
+    display: flex;
+    flex-direction: row;
+}
+.v-container {
+    display: flex;
+    flex-direction: column;
+}
+.container {
+    padding: 1em;
+    gap: 1.5em;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5em 2em 1em 2em;
+
+    .h-container {
+        gap: 1em;
+        margin-left: 1em;
+        height: 52px;
+        
+        button {
+            height: 100%;
+        }
+        .p-dropdown {
+            height: 100%;
+        }
+    }
+}
+
+.p-sidebar {
+    h2 {
+        margin-top: 0em;
+        margin-bottom: 2em;
+    }
+
+    .p-float-label{
+        margin-bottom: 1.6em;
+    }    
+}
+
+.p-accordion-tab {
+    .p-accordion-header-link {
+        padding: 1em 1.5em;
+        font-size: large;
+    }
+    .p-accordion-content {
+        padding: 0.5em;
+    }
+}
+
+.selectedCard, .p-accordion-tab-active .p-accordion-header .p-accordion-header-link{
+    background-color: var(--primary-color) !important;
+    color: var(--primary-color-text) !important;
+    font-weight: bold ;
+}
+
+
+.p-breadcrumb {
+    padding: 15px !important;
+}
+
+.edit-side-bar {
+    form {
+        input, span.p-inputnumber, button {
+            width: 100%;
+        }
+    }
+}
+
+// HIDE NUMBER INPUT ARROWS
+// Chrome, Safari, Edge, Opera
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+// Firefox
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+

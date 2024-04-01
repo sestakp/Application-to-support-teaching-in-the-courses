@@ -1,0 +1,14 @@
+<TabView v-model:activeIndex="tabId">
+    <TabPanel header="Activities">
+        <CourseDetailActivityTab :courseId="courseId" v-if="tabId == 0" />
+    </TabPanel>
+    <TabPanel header="Tasks">
+        <CourseDetailTaskTab :courseId="courseId" v-if="tabId == 1"/>
+    </TabPanel>
+    <TabPanel header="Types">            
+        <CourseDetailTypeTab :courseId="courseId" v-if="tabId == 2"/>
+    </TabPanel>
+    <TabPanel header="Students">
+        <CourseDetailStudentTab :courseId="courseId"  v-if="tabId == 3"/>
+    </TabPanel>
+</TabView>

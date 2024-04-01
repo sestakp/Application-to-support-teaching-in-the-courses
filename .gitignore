@@ -1,0 +1,4 @@
+api/target/
+api/.mvn/wrapper/maven-wrapper.jar
+.env
+.vscode/settings.json

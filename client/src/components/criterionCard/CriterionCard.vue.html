@@ -1,0 +1,17 @@
+<div class="criterion-card inline-flex align-items-center justify-content-center m-2"> 
+    <Card>
+        <template #title>
+            {{ criterion?.name }} ({{ criterion?.code }})
+        </template>
+        <template #subtitle>
+            {{ criterion?.aassessmentMethod}} ({{ criterion?.minPoints }} - {{ criterion?.maxPoints }} points)
+        </template>
+        <template #content>
+            {{ criterion?.description }}
+        </template>
+        <template #footer>
+            <Button icon="pi pi-pencil" label="Edit" @click="(e) => { e.stopPropagation(); selectItem(criterion); }"></Button>
+            <Button icon="pi pi-trash" label="Delete" @click="(e) => { e.stopPropagation(); openDeleteDialog(); }" severity="secondary" style="margin-left: 0.5em" ></Button>
+        </template>
+    </Card>
+</div>

@@ -1,0 +1,24 @@
+<div class="user-config">
+    <div class="h-container justify-content-center m-3">
+        <form class="register-form v-container container" @submit="onUpdate" action="javascript:void(0);">
+            <span class="p-float-label">
+                <InputText v-model="registerModel.email" id="email" type="email" disabled />
+                <label for="email">Email</label>
+            </span>
+            <span class="p-float-label">
+                <InputText v-model="registerModel.name" id="fullname" />
+                <label for="fullname">Full name<span style="color: red;">*</span></label>
+            </span>
+            <span class="p-float-label">
+                <Password v-model="registerModel.password" inputId="password" />
+                <label for="password">New password<span style="color: red;">*</span></label>
+            </span>
+            <span class="p-float-label">
+                <Password v-model="registerModel.passwordConfirm" inputId="passwordConfirm" :feedback="false" />
+                <label for="passwordConfirm">Confirm new password<span style="color: red;">*</span></label>
+            </span>
+            <small id="passwordConfirm-error" style="color: red">{{passwordError}}</small>
+            <Button type="submit" label="Update" :disabled="loading"></Button>
+        </form>
+    </div>
+</div>

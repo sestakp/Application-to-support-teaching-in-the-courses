@@ -1,0 +1,63 @@
+<div class="course-detail-view">
+    <div class="header">
+        <Breadcrumb :home="home" :model="items" style="width: 90%;">
+            <template #item="{ item, props }">
+                <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
+                    <a :href="href" v-bind="props.action" @click="navigate">
+                        <span :class="[item.icon, 'text-color']" />
+                        <span class="text-primary font-semibold">{{ item.label }}</span>
+                    </a>
+                </router-link>
+                <a v-else :href="item.url" :target="item.target" v-bind="props.action">
+                    <span class="text-color">{{ item.label }}</span>
+                </a>
+            </template>
+        </Breadcrumb>
+        <div class="h-container">
+            <Button label="Add student" @click="() => selectStudent({})"></Button>
+            <Button label="Delete all students" @click="deleteAllStudents"></Button>
+            <Button label="Import students" @click="toggleImportStudensOpen"></Button>
+        </div>
+    </div>
+
+    <div v-if="loading"><LoadingBadger /></div>
+    <div v-else class="course-detail-body h-container">
+        <div class="course-students">
+            <div v-if="allStudents.length > 0">
+                <StudentCard v-for="s in allStudents" :key="s.id" :student="s" :isEditable="true" />
+            </div>
+            <div v-else>
+                No students
+            </div>
+        </div>
+    </div>
+
+    <Sidebar class="edit-side-bar" v-model:visible="openImportStudentsSidePanel" position="right" style="width: 700px" @hide="onHide" @show="onShow">
+        <h2>Import students</h2>
+        <form @submit="onSubmit" action="javascript:void(0);">
+            <Textarea v-model="studentImportInput" @input="onStudentInputChange" autoResize style="width: 100%; resize: vertical; max-height: 75vh;" @keydown.tab.prevent="insertTab" placeholder="Test Testovic \t 000000 \t xtest00"></Textarea>
+            <p style="color: red">{{ studentImportError }}</p>
+            <Button :disabled="importing" type="submit" label="Import"></Button>    
+        </form>
+    </Sidebar>
+
+    <Sidebar class="edit-side-bar" v-model:visible="isSelectedStudent" @hide="onHide" @show="onShow" position="right">
+        <h2>{{ selectedStudent.id != undefined ? "Edit" : "Add" }} Student</h2>
+        <form @submit="saveStudentSubmit" action="javascript:void(0);">
+            <span class="p-float-label">
+                <InputText v-model="selectedStudent.name" inputId="name" :feedback="false" />
+                <label for="name">Name<span style="color:red">*</span></label>
+            </span>
+            <span class="p-float-label">
+                <InputText v-model="selectedStudent.vutlogin" inputId="vutlogin" :feedback="false" />
+                <label for="vutlogin">VUT Login<span style="color:red">*</span></label>
+            </span>
+            <span class="p-float-label">
+                <InputText v-model="selectedStudent.fitlogin" inputId="fitlogin" :feedback="false" />
+                <label for="fitlogin">FIT Login<span style="color:red">*</span></label>
+            </span>
+            <p style="color: red;">{{insertStudentError}}</p>
+            <Button type="submit" label="Save"></Button>    
+        </form>
+    </Sidebar>      
+</div>

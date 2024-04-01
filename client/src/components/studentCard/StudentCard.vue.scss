@@ -1,0 +1,24 @@
+.student-card {
+    box-sizing: border-box;
+    box-shadow: 1px 2px 4px 2px rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+
+    .h-container {
+        justify-content: space-between;
+        align-items: center;
+
+        .title {
+            font-size: larger;
+            font-weight: bold;
+            margin-left: 1em;
+        }
+    }
+}
+.student-card.assessed-card {
+    box-shadow: 1px 2px 4px 2px var(--primary-color) !important;
+    color: var(--primary-color) !important;
+}
+.student-card.selected-card {
+    background-color: var(--primary-color) !important;
+    color: var(--primary-color-text) !important;
+}

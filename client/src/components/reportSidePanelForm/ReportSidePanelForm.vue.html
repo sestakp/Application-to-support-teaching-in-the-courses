@@ -1,0 +1,16 @@
+<Sidebar v-model:visible="isSelectedItem" @hide="onHide" @show="onShow" position="right" style="width: 550px;">
+    <h2>{{ selectedItem.id != undefined ? "Edit" : "Add" }} Report</h2>
+    <span class="p-float-label">
+        <Textarea v-model="selectedItem.description" inputId="description" :feedback="false" autoResize ></Textarea>
+        <label for="description">Description <span style="color: red">*</span></label>
+        <p><small id="value-error" :style="{color: 'red'}">{{descriptionError}}</small></p>
+    </span>
+
+    <span class="p-float-label">
+        <InputText v-model="selectedItem.hours" mask="999:59:59" placeholder="" inputId="hours"/>
+        <label for="hours">Hours</label>
+        <p><small id="value-error" :style="{color: 'red'}">{{hoursError}}</small></p>
+    </span>
+
+    <Button label="Save" @click="handleSubmit"></Button>
+</Sidebar>
